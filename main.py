@@ -25,7 +25,7 @@ def class_label_to_vector(class_labels):
             results[i] = 1
     return results
 
-rawdata = pd.read_csv('spam.csv', encoding='cp1250')
+rawdata = pd.read_csv('input_data.csv', encoding='cp1250')
 rawdata = rawdata.dropna(axis='columns')
 X = rawdata['v2']
 y = rawdata['v1']
@@ -74,7 +74,7 @@ plt.title('Model Accuracy')
 plt.ylabel('Accuracy Score')
 plt.xlabel('Epochs')
 plt.legend(['training', 'validation'], loc='lower right')
-plt.savefig('accuracy_epoch.png')
+plt.savefig('results/accuracy_epoch.png')
 plt.close()
 
 plt.plot(history.history['loss'])
@@ -83,11 +83,11 @@ plt.title('Model Loss function')
 plt.ylabel('Loss')
 plt.xlabel('Epochs')
 plt.legend(['training', 'validation'], loc='upper right')
-plt.savefig('loss_epoch.png')
+plt.savefig('results/loss_epoch.png')
 
 results = model.evaluate(x_test, y_test)
 
-outputfile = open('results.txt', 'w+')
+outputfile = open('results/results.txt', 'w+')
 outputfile.write('Final results after training for 20 Epochs\n')
 outputfile.write('Accuracy: %s\n' % (results[1]))
 outputfile.write('Loss: %s\n' % (results[0]))
