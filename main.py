@@ -5,6 +5,7 @@ seed(42)
 
 import pandas as pd
 import numpy as np
+import sys
 from keras.preprocessing.text import Tokenizer
 from keras import models
 from keras import layers
@@ -38,23 +39,27 @@ tokenizer.fit_on_texts(X_train)
 X_train_tokenized = tokenizer.texts_to_sequences(X_train)
 X_test_tokenized = tokenizer.texts_to_sequences(X_test)
 
-print('Vectorizing tokenized input')
+print('Vectorizing tokenized text')
 x_train = token_to_vector(X_train_tokenized, 10000)
 x_test = token_to_vector(X_test_tokenized, 10000)
 
 y_train = class_label_to_vector(y_train)
 y_test = class_label_to_vector(y_test)
 
-train_x_df = pd.DataFrame(x_train)
-print(train_x_df.shape)
-test_x_df = pd.DataFrame(x_test)
-print(test_x_df.shape)
-train_y_df = pd.DataFrame(y_train)
-print(train_y_df.shape)
-test_y_df = pd.DataFrame(y_test)
-print(test_y_df.shape)
+if len(sys.argv) > 1:
+    print('Writing preprocessed data to disk...')
+    print('This may take a while depending on the speed of your disk and computer so stay patient!')
+    train_x_df = pd.DataFrame(x_train)
+    train_x_df.to_csv('results/training_input.csv')
+    test_x_df = pd.DataFrame(x_test)
+    test_x_df.to_csv('results/test_input.csv')
+    train_y_df = pd.DataFrame(y_train)
+    train_y_df.to_csv('results/training_labels.csv')
+    test_y_df = pd.DataFrame(y_test)
+    test_y_df.to_csv('results/test_labels.csv')
+    print('Finished writing preprocessed data to disk')
 
-
+print('Starting model fitting...')
 model = models.Sequential()
 model.add(layers.Dense(4, activation='relu', input_shape=(10000,)))
 model.add(layers.Dense(4, activation='relu'))
@@ -86,7 +91,6 @@ plt.legend(['training', 'validation'], loc='upper right')
 plt.savefig('results/loss_epoch.png')
 
 results = model.evaluate(x_test, y_test)
-
 outputfile = open('results/results.txt', 'w+')
 outputfile.write('Final results after training for 20 Epochs\n')
 outputfile.write('Accuracy: %s\n' % (results[1]))
@@ -94,6 +98,5 @@ outputfile.write('Loss: %s\n' % (results[0]))
 outputfile.flush()
 outputfile.close()
 
-print(model.metrics_names)
-print('Test result: ', results)
+print('DONE')
 
