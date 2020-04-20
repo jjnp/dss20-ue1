@@ -29,6 +29,11 @@ The project tries to automate the decision of whether a text message is spam or 
 # Results
 Sample results can be seen in the `comparison_results` folder. When you run it your result should be exactly the same.
 In the comparison_results folder intermediary results are also provided, namely the fully transformed training and testing input, as well as the according labels. This data is exactly what is used for training the subsequent model. For performance reasons this data is only written to disk if a flag is specified.
+The `training_input.csv` file is only available as a zip because it would otherwise exceed githubs upload limit. The preprocessed files are:
+ * training_input.csv (from training_input.zip)
+ * training_labels.csv
+ * test_input.csv
+ * test_labels.csv
 # Licenses
 ## Code
 The code and images are provided under the MIT license. You can see the terms in the `LICENSE` file
